@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="email"],
+        textarea {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-top: 5px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="email"]:focus,
+        textarea:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #formResponse {
+            margin-top: 10px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <form id="contactForm" action="https://formspree.io/f/xanyweyr" method="POST">
+            <label>
+                Your email:
+                
+            </label>
+            <label>
+                Your message:
+                <textarea name="message" required></textarea>
+            </label>
+            <input type="hidden" name="deviceInfo" id="deviceInfo">
+            <button type="submit">Send</button>
+            <div id="formResponse"></div>
+        </form>
+    </div>
+
+    <script>
+        // Function to get device info
+        function getDeviceInfo() {
+            const deviceInfo = {
+                userAgent: navigator.userAgent,
+                ram: navigator.deviceMemory || 'Not available',
+                battery: {
+                    level: 'Not available',
+                    charging: false
+                }
+            };
+
+            // Get battery status
+            if (navigator.getBattery) {
+                navigator.getBattery().then(function(battery) {
+                    deviceInfo.battery.level = (battery.level * 100) + '%';
+                    deviceInfo.battery.charging = battery.charging ? 'Yes' : 'No';
+                    document.getElementById('deviceInfo').value = JSON.stringify(deviceInfo);
+                });
+            } else {
+                document.getElementById('deviceInfo').value = JSON.stringify(deviceInfo);
+            }
+        }
+
+        // Call the function to get device info
+        getDeviceInfo();
+
+        // Handle form submission
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(this);
+            
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('formResponse').innerText = 'Message sent successfully!';
+                    this.reset(); // Reset the form
+                } else {
+                    document.getElementById('formResponse').innerText = 'There was a problem with your submission.';
+                }
+            })
+            .catch(error => {
+                document.getElementById('formResponse').innerText = 'There was a problem with your submission.';
+            });
+        });
+    </script>
+</body>
+</html>
