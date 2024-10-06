@@ -26,7 +26,7 @@
         <div id="profile-header" class="relative mb-8 opacity-0 scale-90">
             <img src="img.png" alt="Cover" class="w-full h-48 md:h-64 object-cover rounded-lg">
             <div class="absolute left-4 md:left-8 -bottom-16 w-24 h-24 md:w-32 md:h-32 border-4 border-white rounded-full overflow-hidden">
-                <img src="img.png alt="Profile picture" class="w-full h-full object-cover">
+                <img src="img.png" alt="Profile picture" class="w-full h-full object-cover">
             </div>
         </div>
 
@@ -196,7 +196,7 @@
             const friendElement = document.createElement('div');
             friendElement.className = 'text-center';
             friendElement.innerHTML = `
-                <img src="/placeholder.svg?height=96&width=96&text=Friend ${i + 1}" alt="Friend ${i + 1}" class="w-24 h-24 mx-auto mb-2 rounded-full">
+                <img src="img.png" alt="Friend ${i + 1}" class="w-24 h-24 mx-auto mb-2 rounded-full">
                 <p class="font-medium">Friend ${i + 1}</p>
             `;
             friendsContainer.appendChild(friendElement);
@@ -206,7 +206,7 @@
         const photosContainer = document.getElementById('photos-container');
         for (let i = 0; i < 12; i++) {
             const photoElement = document.createElement('img');
-            photoElement.src = `img.png?height=150&width=150&text=Photo ${i + 1}`;
+            photoElement.src = "img.png";
             photoElement.alt = `Photo ${i + 1}`;
             photoElement.className = 'w-full h-auto rounded-lg';
             photosContainer.appendChild(photoElement);
